@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate} from 'react-router-dom'
+import { useAuth } from './security/AuthContext'
 
 export default function LoginComponent(){
 
@@ -8,6 +9,9 @@ export default function LoginComponent(){
     const[showSuccessMessage,setShowSuccessMessage] =useState(false)
     const[showErrorMessage,setShowErrorMessage] =useState(false)
     const navigate = useNavigate() // 다른 컴포넌트로 이동하는 훅 
+    //로그인 인증 컨텍스트
+    const authContext = useAuth()
+
 
     function handleUsernameChange(event){
         setUsername(event.target.value)
@@ -19,12 +23,14 @@ export default function LoginComponent(){
 
     function handleSubmit(){
         if(username==='in28minutes'&&password==='dummy'){
+            authContext.setAuthenticated(true)
             console.log('Success')
             setShowSuccessMessage(true)
             setShowErrorMessage(false)
             navigate(`/welcome/${username}`) // welcome 페이지로 이동
                                             // 파라미터를 넘길때 틱(esc 옆)을 사용 `
         }else{
+            authContext.setAuthenticated(false)
             console.log('Faild')
             setShowSuccessMessage(false)
             setShowErrorMessage(true)
