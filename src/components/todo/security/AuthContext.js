@@ -19,8 +19,23 @@ export default function AuthProvider({children}){
     // 10초마다 함수를 호출
     //setInterval(() => setNumber(number+1),10000)
 
+    //login 로직
+    function login(username,password){
+        if(username==='in28minutes'&&password==='dummy'){
+            setAuthenticated(true)
+            return true
+        }else{
+            setAuthenticated(false)
+            return false
+        }
+    }
+
+    function logout(){
+        setAuthenticated(false)
+    }
+
     // 자바스크립트에서 객체를 생성하는 방법
-    const valueToBeShared = {number, isAuthenticated, setAuthenticated}
+    const valueToBeShared = {isAuthenticated,login,logout}
 
     return(
         <AuthContext.Provider value={ valueToBeShared }>

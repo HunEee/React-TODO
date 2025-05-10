@@ -6,7 +6,6 @@ export default function LoginComponent(){
 
     const[username,setUsername] =useState('in28minutes')
     const[password,setPassword] =useState('')
-    const[showSuccessMessage,setShowSuccessMessage] =useState(false)
     const[showErrorMessage,setShowErrorMessage] =useState(false)
     const navigate = useNavigate() // 다른 컴포넌트로 이동하는 훅 
     //로그인 인증 컨텍스트
@@ -22,17 +21,10 @@ export default function LoginComponent(){
     }
 
     function handleSubmit(){
-        if(username==='in28minutes'&&password==='dummy'){
-            authContext.setAuthenticated(true)
-            console.log('Success')
-            setShowSuccessMessage(true)
-            setShowErrorMessage(false)
+        if(authContext.login(username,password)){
             navigate(`/welcome/${username}`) // welcome 페이지로 이동
                                             // 파라미터를 넘길때 틱(esc 옆)을 사용 `
         }else{
-            authContext.setAuthenticated(false)
-            console.log('Faild')
-            setShowSuccessMessage(false)
             setShowErrorMessage(true)
         }
     }
@@ -40,7 +32,6 @@ export default function LoginComponent(){
     return(
         <div className="Login">
             <h1>Time to Login!</h1>
-            {showSuccessMessage &&<div className='successMessage'>Authenticated Successfully</div>}
             {showErrorMessage &&<div className='errorMessage'>Authentication Faild, Please check your credentials.</div>}
             <div className="LoginForm">
                 <div>    
