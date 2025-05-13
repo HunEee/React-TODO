@@ -11,8 +11,10 @@ export default function AuthProvider({children}){
 
     //state를 context에 주입
     const [number, setNumber] = useState(10)
-
+    // 인증여부 state
     const [isAuthenticated, setAuthenticated] = useState(false)
+    // usrtname를 전달하기 위한 state
+    const [username, setUsername] = useState(null)
 
     //10초마다 상태를 변경
     // setInterval(함수, 시간)
@@ -23,9 +25,11 @@ export default function AuthProvider({children}){
     function login(username,password){
         if(username==='in28minutes'&&password==='dummy'){
             setAuthenticated(true)
+            setUsername(username)
             return true
         }else{
             setAuthenticated(false)
+            setUsername(null)
             return false
         }
     }
@@ -35,7 +39,7 @@ export default function AuthProvider({children}){
     }
 
     // 자바스크립트에서 객체를 생성하는 방법
-    const valueToBeShared = {isAuthenticated,login,logout}
+    const valueToBeShared = {isAuthenticated,login,logout, username}
 
     return(
         <AuthContext.Provider value={ valueToBeShared }>
