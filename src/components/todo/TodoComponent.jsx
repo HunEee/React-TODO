@@ -36,7 +36,6 @@ export default function TodoComponenet(){
         console.log(values)
     }
 
-    //테스트
     return(
         <div className="container">
             <h1>Enter Todo Details</h1>
