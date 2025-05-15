@@ -36,6 +36,7 @@ export default function TodoComponenet(){
         console.log(values)
     }
 
+    //테스트
     return(
         <div className="container">
             <h1>Enter Todo Details</h1>
@@ -58,7 +59,7 @@ export default function TodoComponenet(){
                                 <div>
                                     <button className="btn btn-success m-5" type="submit">Save</button>
                                 </div>
-                            </Form>
+                            </Form> 
                         )
                     }   
                 </Formik>
