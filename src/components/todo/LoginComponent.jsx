@@ -20,8 +20,9 @@ export default function LoginComponent(){
         setPassword(event.target.value)
     }
 
-    function handleSubmit(){
-        if(authContext.login(username,password)){
+    // authContext.login의 결과를 기다리고 웰컴페이지로 이동
+    async function handleSubmit(){
+        if(await authContext.login(username,password)){
             navigate(`/welcome/${username}`) // welcome 페이지로 이동
                                             // 파라미터를 넘길때 틱(esc 옆)을 사용 `
         }else{

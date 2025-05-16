@@ -3,11 +3,15 @@ import { useState } from 'react'
 //import axios from 'axios'
 //axios를 위한 임포트트
 import {  retrieveHelloWorldPathVariable } from './api/HelloWorldApiService'
+import { useAuth } from './security/AuthContext'
 
 export default function WelcomeComponent(){
+    
     const {username} = useParams() // 객체를 직접 받는 대신 객체의 값을 받음
     // console.log(params.username)
     console.log(username)
+
+    const authContext = useAuth()
 
     const [message, setMessage] = useState(null)
 
@@ -27,9 +31,10 @@ export default function WelcomeComponent(){
         //                         .catch((error)=>errorResponse(error))
         //                         .finally(()=>console.log('cleanup'))
 
-        retrieveHelloWorldPathVariable('Ranga').then((response) => successfulResponse(response))
-                                                .catch((error)=>errorResponse(error))
-                                                .finally(()=>console.log('cleanup'))
+        retrieveHelloWorldPathVariable('Ranga',authContext.token)
+            .then((response) => successfulResponse(response))
+            .catch((error)=>errorResponse(error))
+            .finally(()=>console.log('cleanup'))
 
     }
 
