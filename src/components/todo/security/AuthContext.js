@@ -1,5 +1,5 @@
 import { createContext,useContext, useState } from "react";
-import { excuteBasicAuthenticationService } from "../api/AuthenticationApiService"
+import { excuteJwtAuthenticationService } from "../api/AuthenticationApiService"
 import { apiClient } from "../api/ApiClient";
 
 // 1. 컨텍스트 생성
@@ -38,26 +38,60 @@ export default function AuthProvider({children}){
     //     }
     // }
 
-    // login 로직
-    async function login(username,password){
+    // login 로직 - Basic 토큰 버전전
+    // async function login(username,password){
 
-        const baToken = 'Basic ' + window.btoa(username + ":"+ password)
+    //     const baToken = 'Basic ' + window.btoa(username + ":"+ password)
+
+    //     try{
+    //         // 기본 인증 서비스(excuteBasicAuthenticationService) 가 실행될 때까지 기다렸다가 response를 리턴
+    //         const response = await excuteBasicAuthenticationService(baToken)
+
+    //         if(response.status==200){
+    //             setAuthenticated(true)
+    //             setUsername(username)
+    //             setToken(baToken)
+
+    //             //사용자가 로그인을 하면 모든 apiclient 호출에 이 헤더를 추가
+    //             // 토큰을 헤더에 추가 -> 인터셉터 설정
+    //             apiClient.interceptors.request.use(
+    //                 (config) =>{
+    //                     console.log('intercepting and adding a token')
+    //                     config.headers.Authorization = baToken
+    //                     return config
+    //                 }
+    //             )
+
+    //             return true
+    //         }else{
+    //             logout()
+    //             return false
+    //         }
+    //     }catch(error) {
+    //         logout()
+    //         return false
+    //     }  
+    // }
+
+    // login 로직 - JWT 버전
+    async function login(username,password){
 
         try{
             // 기본 인증 서비스(excuteBasicAuthenticationService) 가 실행될 때까지 기다렸다가 response를 리턴
-            const response = await excuteBasicAuthenticationService(baToken)
+            const response = await excuteJwtAuthenticationService(username, password)
 
             if(response.status==200){
+                const jwtToken = 'Bearer ' + response.data.token
                 setAuthenticated(true)
                 setUsername(username)
-                setToken(baToken)
+                setToken(jwtToken)
 
                 //사용자가 로그인을 하면 모든 apiclient 호출에 이 헤더를 추가
                 // 토큰을 헤더에 추가 -> 인터셉터 설정
                 apiClient.interceptors.request.use(
                     (config) =>{
                         console.log('intercepting and adding a token')
-                        config.headers.Authorization = baToken
+                        config.headers.Authorization = jwtToken
                         return config
                     }
                 )
